@@ -1,5 +1,5 @@
 - proxies
-    - name: "🇦🇫 SMART-S5 阿富汗"
+  - name: "🇦🇫 SMART-S5 阿富汗"
     type: socks5
     server: gate.smartproxy.com  
     port: 7000

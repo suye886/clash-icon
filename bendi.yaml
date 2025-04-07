@@ -6,8 +6,6 @@
     username: "user-chiyu886-country-af"
     password: "Hla=Yw4X9wIrvv19ia"
     udp: true
-    quic:
-      security: none
   
   - name: "🇦🇽 SMART-S5 奥兰群岛"
     type: socks5

@@ -16,6 +16,9 @@ let proxies = await produceArtifact({
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
+  if (['all'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies))
+  }
   if (['hk', 'hk-auto'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /港|hk|hongkong|kong kong|🇭🇰/i))
   }

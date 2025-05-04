@@ -73,13 +73,13 @@ config.outbounds.forEach(group => {
     case 'sg':
     case 'sg-auto':
       // 新加坡：排除 US 与 NZ
-      group.outbounds.push(...getTags(/^(?!.*(?:nz)).*(新|sg|singapore|🇸🇬)/i))
+      group.outbounds.push(...getTags(/^(?!.*(?:🇳🇿|新西兰)).*(新|sg|singapore|🇸🇬)/i))
       break
 
     case 'us':
     case 'us-auto':
       // 美国：排除 AU 与 RU
-      group.outbounds.push(...getTags(/^(?!.*(?:au|aus|ru|rus)).*(美|us|unitedstates|united states|🇺🇸)/i))
+      group.outbounds.push(...getTags(/^(?!.*(?:🇦🇺|🇷🇺|russia|🇦🇹|austria)).*(美|us|unitedstates|united states|🇺🇸)/i))
       break
   }
 })

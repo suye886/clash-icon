@@ -1,15 +1,14 @@
 const { type, name } = $arguments
 
-// fallback 兼容直连出口
-const compatibleOutbound = {
+const compatible_outbound = {
   tag: 'COMPATIBLE',
   type: 'direct',
 }
 
-let compatibleUsed = false
+let compatible = false
 let config = JSON.parse($files[0])
 
-// 产出所有代理节点
+// 产出节点
 let proxies = await produceArtifact({
   name,
   type: /^1$|col/i.test(type) ? 'collection' : 'subscription',
@@ -17,34 +16,35 @@ let proxies = await produceArtifact({
   produceType: 'internal',
 })
 
-console.log('=== 代理节点 tags ===', proxies.map(p => p.tag))
+// 调试输出产出的节点 tag
+console.log('生成的代理节点 tags:', proxies.map(p => p.tag))
 
 if (!Array.isArray(proxies) || proxies.length === 0) {
-  console.warn('⚠️ 未获取到任何代理节点！')
+  console.warn('⚠️ 未获取到任何代理节点，请检查订阅是否正确或网络是否正常。')
 }
 
-// 先 push 全部节点到 outbounds 等待分类填充
 config.outbounds.push(...proxies)
 
-/**
- * 返回符合正则的节点 tag 列表
- * @param {RegExp} [regex]  可选，若不传则返回所有 proxies 的 tag
- */
+// 获取匹配到的 tag 列表
 function getTags(regex) {
-  const matched = proxies.filter(p =>
-    typeof p.tag === 'string' && (!regex || regex.test(p.tag))
-  )
-  const tags = matched.map(p => p.tag)
-  if (regex && tags.length === 0) {
-    console.warn(`【WARN】正则 ${regex} 未匹配到任何节点`)
+  const result = (regex
+    ? proxies.filter(p => typeof p.tag === 'string' && regex.test(p.tag))
+    : proxies
+  ).map(p => p.tag)
+
+  if (regex && result.length === 0) {
+    console.warn(`⚠️ 正则 ${regex} 未匹配到任何节点。`)
   }
-  return tags
+
+  return result
 }
 
-// 按区域分组填充 outbounds
+// 策略组填充逻辑
 config.outbounds.forEach(group => {
   if (!group.tag || !Array.isArray(group.outbounds)) return
+
   const tag = group.tag.toLowerCase()
+
   switch (tag) {
     case 'all':
       group.outbounds.push(...getTags())
@@ -52,47 +52,44 @@ config.outbounds.forEach(group => {
 
     case 'hk':
     case 'hk-auto':
-      group.outbounds.push(...getTags(/港|hk|hongkong|kong kong|🇭🇰/i))
+      group.outbounds.push(...getTags(/^(?=.*(🇭🇰|香港|\b(HK|Hong)\b)).*$/i))
       break
 
     case 'mo':
     case 'mo-auto':
-      group.outbounds.push(...getTags(/澳门|mo|macao|🇲🇴/i))
+      group.outbounds.push(...getTags(/^(?=.*(🇲🇴|澳门|\b(MO|Macao|Macau)\b)).*$/i))
       break
 
     case 'tw':
     case 'tw-auto':
-      group.outbounds.push(...getTags(/台|tw|taiwan|🇹🇼/i))
+      group.outbounds.push(...getTags(/^(?=.*(🇹🇼|台湾|\b(TW|Taiwan)\b)).*$/i))
       break
 
     case 'jp':
     case 'jp-auto':
-      group.outbounds.push(...getTags(/日本|jp|japan|🇯🇵/i))
+      group.outbounds.push(...getTags(/^(?=.*(🇯🇵|日本|\b(JP|Japan)\b)).*$/i))
       break
 
     case 'sg':
     case 'sg-auto':
-      // 新加坡：排除 US 与 NZ
-      group.outbounds.push(...getTags(/^(?!.*(?:🇳🇿|新西兰)).*(新|sg|singapore|🇸🇬)/i))
+      group.outbounds.push(...getTags(/^(?=.*(🇸🇬|新加坡|\b(SG|Singapore)\b)).*$/i))
       break
 
     case 'us':
     case 'us-auto':
-      // 美国：排除 AU 与 RU
-      group.outbounds.push(...getTags(/^(?!.*(?:🇦🇺|🇷🇺|russia|🇦🇹|austria)).*(美|us|unitedstates|united states|🇺🇸)/i))
+      group.outbounds.push(...getTags(/^(?=.*(🇺🇸|美国|\b(US|United States|UnitedStates)\b)).*$/i))
       break
   }
 })
 
-// 对于仍然没有任何出站节点的分组，统一加上 COMPATIBLE
-config.outbounds.forEach(group => {
-  if (!Array.isArray(group.outbounds)) return
-  if (group.outbounds.length === 0) {
-    if (!compatibleUsed) {
-      config.outbounds.push(compatibleOutbound)
-      compatibleUsed = true
+// 若策略组为空，填入兼容 DIRECT
+config.outbounds.forEach(outbound => {
+  if (Array.isArray(outbound.outbounds) && outbound.outbounds.length === 0) {
+    if (!compatible) {
+      config.outbounds.push(compatible_outbound)
+      compatible = true
     }
-    group.outbounds.push(compatibleOutbound.tag)
+    outbound.outbounds.push(compatible_outbound.tag)
   }
 })
 

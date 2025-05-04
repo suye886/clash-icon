@@ -50,6 +50,9 @@ config.outbounds.forEach(i => {
   if (['hk', 'hk-auto'].includes(tag)) {
     i.outbounds.push(...getTags(proxies, /港|hk|hongkong|kong kong|🇭🇰/i))
   }
+  if (['mo', 'mo-auto'].includes(tag)) {
+    i.outbounds.push(...getTags(proxies, /澳门|mo|macao|🇲🇴/i))
+  }
   if (['tw', 'tw-auto'].includes(tag)) {
     i.outbounds.push(...getTags(proxies, /台|tw|taiwan|🇹🇼/i))
   }

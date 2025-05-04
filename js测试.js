@@ -57,7 +57,7 @@ config.outbounds.forEach(group => {
 
     case 'mo':
     case 'mo-auto':
-      group.outbounds.push(...getTags(/^(?=.*(🇲🇴|澳门|\b(MO|Macao|Macau)\b)).*$/i));
+      group.outbounds.push(...getTags(/^(?=.*(🇲🇴|^澳门$|\bMO\b|\bMacao\b|\bMacau\b)).*$/i));
       break;
 
     case 'tw':

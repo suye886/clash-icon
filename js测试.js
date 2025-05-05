@@ -52,7 +52,7 @@ config.outbounds.forEach(group => {
 
     case 'hk':
     case 'hk-auto':
-      group.outbounds.push(...getTags(/^(?=.*(🇭🇰|香港|\b(HK|Hong)\b)).*$/i));
+      group.outbounds.push(...getTags(/^(?=.*(🇭🇰|香港|\b(HK|Hong|gamer)\b)).*$/i));
       break;
 
     case 'mo':
@@ -67,7 +67,7 @@ config.outbounds.forEach(group => {
 
     case 'jp':
     case 'jp-auto':
-      group.outbounds.push(...getTags(/^(?=.*(🇯🇵|日本|\b(JP|Japan)\b)).*$/i));
+      group.outbounds.push(...getTags(/^(?=.*(🇯🇵|日本|\b(JP|Japan|gamer)\b)).*$/i));
       break;
 
     case 'sg':
@@ -77,7 +77,7 @@ config.outbounds.forEach(group => {
 
     case 'us':
     case 'us-auto':
-      group.outbounds.push(...getTags(/^(?=.*(🇺🇸|美国|\b(US|United States|UnitedStates)\b)).*$/i));
+      group.outbounds.push(...getTags(/^(?=.*(🇺🇸|美国|\b(US|United States|UnitedStates|gamer)\b)).*$/i));
       break;
   }
 });

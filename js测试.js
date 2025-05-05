@@ -52,7 +52,7 @@ config.outbounds.forEach(group => {
 
     case 'hk':
     case 'hk-auto':
-      group.outbounds.push(...getTags(/^(?=.*(🇭🇰|香港|\b(HK|Hong|gamer)\b)).*$/i));
+      group.outbounds.push(...getTags(/^(?!.*(新加坡|Singapore|\bSG\b))(?=.*(🇭🇰|香港|\b(HK|Hong|gamer)\b)).*$/i));
       break;
 
     case 'mo':

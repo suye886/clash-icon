@@ -62,7 +62,7 @@ config.outbounds.forEach(group => {
 
     case 'tw':
     case 'tw-auto':
-      group.outbounds.push(...getTags(/台|tw|TWN|taiwan|🇨🇳|🇹🇼/i));
+      group.outbounds.push(...getTags(/台|TW(?:[1-9]|1[01])|TWN|taiwan|🇹🇼/i));
       break;
 
     case 'jp':

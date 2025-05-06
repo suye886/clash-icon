@@ -77,7 +77,7 @@ config.outbounds.forEach(group => {
 
     case 'us':
     case 'us-auto':
-      group.outbounds.push(...getTags(/^(?=.*(🇺🇸|美国|\b(US|United States|UnitedStates|gamer)\b)).*$/i));
+      group.outbounds.push(...getTags(/^(?=.*(🇺🇸|美国|\b(US|United States|UnitedStates)\b)).*$/i));
       break;
   }
 });

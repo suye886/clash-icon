@@ -52,7 +52,7 @@ config.outbounds.forEach(group => {
 
     case 'hk':
     case 'hk-auto':
-      group.outbounds.push(...getTags(/^(?!.*(新加坡|Singapore|\bSG\b))(?=.*(🇭🇰|香港|\b(HK|Hong|gamer)\b)).*$/i));
+      group.outbounds.push(...getTags(proxies, /港|hk|hongkong|kong kong|🇭🇰/i));
       break;
 
     case 'mo':
@@ -67,7 +67,7 @@ config.outbounds.forEach(group => {
 
     case 'jp':
     case 'jp-auto':
-      group.outbounds.push(...getTags(/^(?=.*(🇯🇵|日本|\b(JP|Japan|gamer)\b)).*$/i));
+      group.outbounds.push(...getTags(proxies, /日本|jp|japan|🇯🇵/i));
       break;
 
     case 'sg':

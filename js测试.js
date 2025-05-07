@@ -47,7 +47,7 @@ config.outbounds.forEach(group => {
 
   switch (tag) {
     case 'all':
-      group.outbounds.push(...getTags());
+      group.outbounds.push(...getTags(/^(?!.*\b(🇭🇰|🇯🇵|🇺🇸|🇸🇬|🇨🇳|🇹🇼|🇲🇴|港|hk|hongkong|台|tw|taiwan|日|jp|japan|新|sg|singapore|美|us|unitedstates|澳|mo|macau|macao)\b).*/i));
       break;
 
     case 'hk':

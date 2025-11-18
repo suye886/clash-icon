@@ -8,7 +8,7 @@ async function testGroup(group) {
         let response = await $httpClient.post({
             url: apiUrl,
             headers: {
-                "X-Key": apiKey,
+                "X-Key": chiyu886,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({group_name: group})
